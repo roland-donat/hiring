@@ -1,0 +1,588 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr" xml:lang="fr">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Projet MOSAIC : Analyse de la volatilité du Bitcoin</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="Roland Donat" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/htmlize.css"/>
+<link rel="stylesheet" type="text/css" href="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/css/readtheorg.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/lib/js/jquery.stickytableheaders.min.js"></script>
+<script type="text/javascript" src="https://fniessen.github.io/org-html-themes/src/readtheorg_theme/js/readtheorg.js"></script>
+<link rel="stylesheet" type="text/css" href="https://roland-donat.github.io/ubs/Charte_graphique/IUT/ubs_iut_vannes.css" />
+<link rel="stylesheet" type="text/css" href="https://roland-donat.github.io/ubs-lpsdm-qualite-donnees/custom.css" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2020 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Projet MOSAIC : Analyse de la volatilité du Bitcoin</h1>
+<div id="table-of-contents">
+<h2>Table des matières</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org9ab595d">1. Objectifs</a></li>
+<li><a href="#orgd0b1d7b">2. Données disponibles</a></li>
+<li><a href="#orgce24037">3. Notations mathématiques</a></li>
+<li><a href="#orgcb29bd9">4. Livrable et critères d'évaluation</a></li>
+<li><a href="#orgeac0d0e">5. Travail demandé</a></li>
+</ul>
+</div>
+</div>
+
+
+
+
+
+<p width="100%" alt="comics">
+<img src="https://imgs.xkcd.com/comics/convincing.png" alt="comics" width="100%" />
+<a href="https://xkcd.com/833/">Source de l'image</a>
+</p>
+
+<div id="outline-container-org9ab595d" class="outline-2">
+<h2 id="org9ab595d"><span class="section-number-2">1</span> Objectifs</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+La société EdgeMind et l'Université de Bretagne Sud (UBS) proposent un petit exercice permettant
+d'évaluer les compétences techniques en <i>data science</i> avec le langage <code>Python</code> des personnes retenues
+suite à la première phase d'analyse des candidatures pour le projet MOSAIC.
+</p>
+
+<p>
+L'exercice consiste à étudier la volatilité du cours du <a href="https://fr.wikipedia.org/wiki/Bitcoin">Bitcoin</a> (BTC) par rapport à l'<a href="https://en.wikipedia.org/wiki/USD_Coin">US Dollar Coin</a> (USDC) en
+fonction de l'heure de la journée et du mois de l'année. Pour ce faire, vous disposez de l'historique 2021 du cours
+BTC/USDC échantillonné sur une période 5 minutes. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgd0b1d7b" class="outline-2">
+<h2 id="orgd0b1d7b"><span class="section-number-2">2</span> Données disponibles</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Les données historiques sont disponibles en suivant ce lien. Le tableau <a href="#data_desc">data_desc</a> donne une
+description des variables présentes dans les données. Le format des données est dit sous la forme
+OHLCV (de l'anglais <i>open</i>, <i>high</i>, <i>low</i>, <i>close</i>, <i>volume</i>). Il s'agit du format usuel pour
+représenter les séries temporelles relatives à l'évolution de la valeur d'actifs financiers.
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Tableau 1 :</span> Définition des variables des données BTC/USDC. <div id="data_desc"></div></caption>
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Colonne</th>
+<th scope="col" class="org-left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">timestamp</td>
+<td class="org-left">Timestamp en millisecondes</td>
+</tr>
+
+<tr>
+<td class="org-left">open</td>
+<td class="org-left">Valeur du BTC par rapport à l'USDC au début de la période</td>
+</tr>
+
+<tr>
+<td class="org-left">high</td>
+<td class="org-left">Valeur maximum du BTC par rapport à l'USDC atteinte sur la période</td>
+</tr>
+
+<tr>
+<td class="org-left">low</td>
+<td class="org-left">Valeur mimimum du BTC par rapport à l'USDC atteinte sur la période</td>
+</tr>
+
+<tr>
+<td class="org-left">close</td>
+<td class="org-left">Valeur du BTC par rapport à l'USDC à la fin de la période</td>
+</tr>
+
+<tr>
+<td class="org-left">volume</td>
+<td class="org-left">Montant des ventes et des achats de BTC en USDC sur la période</td>
+</tr>
+
+<tr>
+<td class="org-left">datetime</td>
+<td class="org-left">Horadatage dans le format %Y-%m-%d %H:%M:%D</td>
+</tr>
+</tbody>
+</table>
+
+
+<p>
+Le tableau <a href="#data_head">data_head</a> donne un aperçu des premières données de cotation du BTC par rapport à
+l'USDC. Par exemple, la première ligne du tableau signifie que le 01/01/2021 :
+</p>
+<ul class="org-ul">
+<li>à 00:00:00, le prix d'un BTC était de 28964,50 USDC ;</li>
+<li>à 00:05:00, le prix d'un BTC était de 29018,20 USDC ;</li>
+<li>entre 00:00:00 et 00:05:00 le prix d'un BTC est passé par un minimum 28958,70 USDC
+et un maximum de 29064,50 USDC.</li>
+</ul>
+
+<p>
+Le marché BTC/USDC étant ouvert 24h/24 et 7j/7, nous devrions observer \(\text{close}(t-1)\) égale à
+\(\text{open}(t)\) pour tout \(t\). Toutefois, la collecte des données n'étant pas instantanée, il est
+fréquent d'observer de légères différences entre le cours d'ouverture de la période courante et le
+cours de fermeture de la période précédente.
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<caption class="t-above"><span class="table-number">Tableau 2 :</span> Aperçu des données BTC/USDC. <div id="data_head"></div></caption>
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-right" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-right">timestamp</th>
+<th scope="col" class="org-right">open</th>
+<th scope="col" class="org-right">high</th>
+<th scope="col" class="org-right">low</th>
+<th scope="col" class="org-right">close</th>
+<th scope="col" class="org-right">volume</th>
+<th scope="col" class="org-left">datetime</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-right">1609459200000</td>
+<td class="org-right">28964.5</td>
+<td class="org-right">29064.5</td>
+<td class="org-right">28958.7</td>
+<td class="org-right">29018.2</td>
+<td class="org-right">8.76932</td>
+<td class="org-left">2021-01-01 00:00:00</td>
+</tr>
+
+<tr>
+<td class="org-right">1609459500000</td>
+<td class="org-right">28993.7</td>
+<td class="org-right">28996</td>
+<td class="org-right">28891</td>
+<td class="org-right">28914.3</td>
+<td class="org-right">11.148</td>
+<td class="org-left">2021-01-01 00:05:00</td>
+</tr>
+
+<tr>
+<td class="org-right">1609459800000</td>
+<td class="org-right">28902.5</td>
+<td class="org-right">28908.5</td>
+<td class="org-right">28741.9</td>
+<td class="org-right">28790</td>
+<td class="org-right">4.5805</td>
+<td class="org-left">2021-01-01 00:10:00</td>
+</tr>
+
+<tr>
+<td class="org-right">1609460100000</td>
+<td class="org-right">28799</td>
+<td class="org-right">28891.6</td>
+<td class="org-right">28798.3</td>
+<td class="org-right">28884.4</td>
+<td class="org-right">4.3087</td>
+<td class="org-left">2021-01-01 00:15:00</td>
+</tr>
+
+<tr>
+<td class="org-right">1609460400000</td>
+<td class="org-right">28845</td>
+<td class="org-right">28886.7</td>
+<td class="org-right">28789.2</td>
+<td class="org-right">28885.7</td>
+<td class="org-right">13.2081</td>
+<td class="org-left">2021-01-01 00:20:00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgce24037" class="outline-2">
+<h2 id="orgce24037"><span class="section-number-2">3</span> Notations mathématiques</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Tout d'abord, on note \(\Delta t\) la période d'échantillonnage des données. Dans les données
+disponibles, nous avons \(\Delta t = 5\) minutes. On note également \(t_{0}\) la première date
+d'échantillonnage, i.e. \(t_{0} =\) 2021-01-01 00:00:00.
+</p>
+
+<p>
+Nous introduisons ensuite l'indice \(p \ge 0\) permettant de référencer la \(p\) -ème période
+d'observation des données, i.e. entre \(t_{0} + p\Delta t\) et \(t_{0} + (p+1)\Delta t\). Par
+exemple :
+</p>
+<ul class="org-ul">
+<li>la première période d'observation, \(p = 0\), correspond à la période entre 2021-01-01 00:00:00 et
+2021-01-01 00:05:00 ;</li>
+<li>la cinquième période d'observation, \(p = 4\), correspond à la période entre 2021-01-01 00:15:00 et
+2021-01-01 00:20:00.</li>
+</ul>
+
+<p>
+Les données OHLCV sont notées dans la suite comme suit :
+</p>
+<ul class="org-ul">
+<li>\(\text{O}_{p}\) : prix d'un BTC en USDC à l'ouverture de la période \(p\), i.e. à \(t = t_{0} +
+  p\Delta t\) ;</li>
+<li>\(\text{C}_{p}\) : prix d'un BTC en USDC à la fermeture de la période \(p\), i.e. à \(t = t_{0} +
+  (p+1)\Delta t\) ;</li>
+<li>\(\text{H}_{p}\) : prix maximum d'un BTC en USDC sur la période \(p\) ;</li>
+<li>\(\text{L}_{p}\) : prix mimimum d'un BTC en USDC sur la période \(p\) ;</li>
+<li>\(\text{V}_{p}\) : volume échangé en USDC sur la période \(p\).</li>
+</ul>
+
+<p>
+On note enfin \(R_{p}\) la variation relative du prix de clôture d'un BTC en USDC entre deux
+périodes consécutives. Nous avons donc pour tout \(p \ge 1\) :
+\[
+R_{p} = \frac{\text{C}_{p}}{\text{C}_{p - 1}} - 1.
+\]
+La quantité \(R_{p}\), appelée <i>returns</i> en anglais, est donc positive si le BTC gagne en valeur par
+rapport à l'USDC sur la période \(p\) et négative sinon. Les retours constituent l'indicateur
+principal au coeur de toutes les analyses financières réalisées sur un actif donnée.
+</p>
+
+<p>
+Dans la suite de cet exercice, nous analyserons la distribution des valeurs de \(R_{p}\)
+calculées à partir des données.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgcb29bd9" class="outline-2">
+<h2 id="orgcb29bd9"><span class="section-number-2">4</span> Livrable et critères d'évaluation</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+Le travail est à réaliser sous l'environnement <a href="https://deepnote.com/">Deepnote</a> qui est une plateforme de
+développement collaborative en ligne reposant sur l'édition de <i>notebooks</i> <code>Jupyter</code>. 
+</p>
+
+<p>
+Vous réaliserez et présenterez donc vos analyses sous la forme d'un <i>notebook</i>. L'évaluation portera
+principalement sur les points suivants :
+</p>
+<ul class="org-ul">
+<li>la qualité de la rédaction ;</li>
+<li>la présentation du <i>notebook</i> ;</li>
+<li>la pertinence de vos analyses et de vos interprétations ;</li>
+<li>le niveau de vos développements <code>Python</code>.</li>
+</ul>
+
+<p>
+<b>Le travail est à rendre pour le samedi 22/01/2022 à minuit au plus tard</b>. Vous enverrez un lien
+vers votre <i>notebook</i> aux adresses suivantes : <a href="mailto:roland.donat@edgemind.net">mailto:roland.donat@edgemind.net</a> et
+<a href="mailto:evans.gouno@univ-ubs.fr">mailto:evans.gouno@univ-ubs.fr</a>. Note : ne pas oublier d'activer le partage par lien sur le <i>notebook</i>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgeac0d0e" class="outline-2">
+<h2 id="orgeac0d0e"><span class="section-number-2">5</span> Travail demandé</h2>
+<div class="outline-text-2" id="text-5">
+<ol class="org-ol">
+<li>Représenter graphiquement l'évolution des retours \(R_{p}\), \(p \ge 1\) sur l'année 2021.</li>
+<li>Représenter graphiquement la distribution des retours \(R_{p}\), \(p \ge 1\) sur
+l'année 2021. Peut-on considérer que les retours \(R_{p}\) sont normalement distribués ?</li>
+<li>Représenter à l'aide d'un diagramme en bar l'écart-type empirique des retours \(R_{p}\) en fonction de
+l'heure de la journée, i.e. sur [00:00:00, 01:00:00[, [01:00:00, 02:00:00[, &#x2026;, [23:00:00,
+24:00:00[.</li>
+<li>Représenter à l'aide d'un diagramme en bar l'écart-type des retours \(R_{p}\) en fonction du mois
+de l'année, i.e. janvier, février, &#x2026;, décembre.</li>
+<li>Représenter l'évolution de la distribution des \(R_{P}\) en fonction de l'heure de la journée, puis
+en fonction du mois de l'année à l'aide de boxplot.</li>
+<li>Que pouvez vous dire sur l'évolution de la volatilité des retours au
+cours de la journée, au cours de l'année ?</li>
+</ol>
+
+<p>
+Notes : 
+</p>
+<ul class="org-ul">
+<li>Vous êtes techniquement libre de travailler avec les librairies <code>Python</code> de votre choix.</li>
+<li>Toutefois, la librairie <code>plotly.express</code> permet de réaliser facilement des représentations graphiques
+interactives.</li>
+</ul>
+</div>
+</div>
+</div>
+</body>
+</html>
