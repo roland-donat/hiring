@@ -5,8 +5,8 @@
 :root {
   --primary-color: #1f416d;
   --secondary-color: #ef7b26;
-  --tertiary-color: #4c000a;
-  --quaternary-color:  #bf8740;
+  --tertiary-color: #bf8740;
+  --quaternary-color:  #4c000a;
   --quinary-color:  #a10010;
 
   --block-code-bg-color:  DarkSlateGray;
@@ -49,12 +49,12 @@ h1 {
  *********************************************/
 
 h2 {
-    color: var(--primary-color);
+    color: var(--secondary-color);
     font-size: 120%;
 }
 
 h3 {
-  color: var(--quinary-color);
+  color: var(--tertiary-color);
   font-size: 110%;
   font-weight: normal;
 }
